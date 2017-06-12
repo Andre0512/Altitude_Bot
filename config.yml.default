@@ -1,0 +1,3 @@
+altitude:
+  bottoken: TOKEN-FOR-TELEGRAM-BOT
+  mapstoken: TOKEN-FOR-GOOGLE-MAPS-API
