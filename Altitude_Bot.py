@@ -50,7 +50,10 @@ def help(bot, update):
 
 
 def get_language(update):
-    language = update.message.from_user.language_code
+    try:
+        language = update.message.from_user.language_code
+    except:
+        language = 'en'
     if language.split('-')[0] == 'de':
         return True
     else:
@@ -66,9 +69,14 @@ def location(bot, update):
         reply_text = "Du bist auf einer Höhe von *" + altitude + "* Metern 😁"
     else:
         reply_text = "You are at an altitude of " + str(altitude) + " meters 😁"
-
     update.message.reply_text(reply_text, parse_mode=ParseMode.MARKDOWN)
-
+    user = update.message.from_user
+    name = user.first_name + " " + user.last_name if user.last_name else user.first_name  
+    log = ("\n" + name + " " + str(user.id) + " " + user.language_code + 
+            " (" + str(location.latitude) + ", " + str(location.longitude) + ")")
+    file = open("log.txt","a")
+    file.write(log) 
+    file.close() 
 
 def error(bot, update, error):
     logger.warn('Update "%s" caused error "%s"' % (update, error))
