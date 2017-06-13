@@ -32,16 +32,16 @@ def get_altitude(latitude, longitude):
 def start(bot, update):
     if get_language(update):
         salutation = 'Hallo ' + update.message.from_user.first_name + " ✌🏻\n"
-        text = "Sende mir deinen Standort und ich sage dir auf welcher Höhe du dich befindest 🙂"
-        keyboard_text = 'Standort senden 📍'
+        text = "Sende mir einen Standort und ich sage dir auf welcher Höhe du dich befindest 🙂"
+        keyboard_text = 'Aktuellen Standort senden 📍'
     else:
         salutation = 'Hello ' + update.message.from_user.first_name + " ✌🏻\n"
-        text = 'Send me your location and I will tell you what height you are above the sea level 🙂'
-        keyboard_text = 'Sent location 📍'
+        text = 'Send me a location and I will tell you what height you are above the sea level 🙂'
+        keyboard_text = 'Send current location 📍'
 
-    if not update.message.text == 'start':
+    if update.message.text == '/start':
         text = salutation + text
-    keyboard = ReplyKeyboardMarkup([[KeyboardButton(text=keyboard_text, request_location=True)]])
+    keyboard = ReplyKeyboardMarkup([[KeyboardButton(text=keyboard_text, request_location=True)]], resize_keyboard=True)
     update.message.reply_text(text=text, reply_markup=keyboard)
 
 
