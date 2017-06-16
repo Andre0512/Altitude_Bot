@@ -32,11 +32,11 @@ def get_altitude(latitude, longitude):
 def start(bot, update):
     if get_language(update):
         salutation = 'Hallo ' + update.message.from_user.first_name + " ✌🏻\n"
-        text = "Sende mir einen Standort und ich sage dir auf welcher Höhe du dich befindest 🙂"
+        text = "Sende mir einen Standort und ich sage dir auf welcher Höhe über dem  Meerespiegel dieser liegt 🙂"
         keyboard_text = 'Aktuellen Standort senden 📍'
     else:
         salutation = 'Hello ' + update.message.from_user.first_name + " ✌🏻\n"
-        text = 'Send me a location and I will tell you what height you are above the sea level 🙂'
+        text = 'Send me a location and I will tell you at what altitude this is above sea level 🙂'
         keyboard_text = 'Send current location 📍'
 
     if update.message.text == '/start':
@@ -71,12 +71,13 @@ def location(bot, update):
         reply_text = "You are at an altitude of " + str(altitude) + " meters 😁"
     update.message.reply_text(reply_text, parse_mode=ParseMode.MARKDOWN)
     user = update.message.from_user
-    name = user.first_name + " " + user.last_name if user.last_name else user.first_name  
-    log = ("\n" + name + " " + str(user.id) + " " + user.language_code + 
-            " (" + str(location.latitude) + ", " + str(location.longitude) + ")")
-    file = open("log.txt","a")
-    file.write(log) 
-    file.close() 
+    name = user.first_name + " " + user.last_name if user.last_name else user.first_name
+    log = ("\n" + name + " " + str(user.id) + " " + user.language_code +
+           " (" + str(location.latitude) + ", " + str(location.longitude) + ")")
+    file = open("log.txt", "a")
+    file.write(log)
+    file.close()
+
 
 def error(bot, update, error):
     logger.warn('Update "%s" caused error "%s"' % (update, error))
@@ -92,6 +93,8 @@ def main():
 
     dp.add_handler(MessageHandler(Filters.location, location))
     dp.add_handler(MessageHandler(Filters.text, start))
+    dp.add_handler(CallbackQueryHandler(button, pass_chat_data=True))
+
     dp.add_error_handler(error)
     updater.start_polling()
     updater.idle()
